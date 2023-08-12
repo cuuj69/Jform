@@ -5,11 +5,19 @@ class Modify:
     intro = "welcome to jform v1"
     def __init__(self):
         self.__modals = {"modal_1":"stringified","modal_2":"sorted","modal_3":"reversed sorted"}
-        
+
+
     def main(self):
         print(self.intro)
         print('available_modals')
         print(self.__modals)
+        #we need to have an entry point for the json file that way we can have a way to view the structure
+        #do we need to borrow from online json viewer? how they render the json files?
+        #then we need the user to select from preconfigured settings, stringified, chunking, custom restructuring then involves specifying
+        #how you want an element key[x] to be or value[y] to be and we can navigate that by using their indexes in the json tree, so lets say 
+        #: key[x:32] must come before key [x:23] close to key [x:22] and maybe behind other key, values, with specified indexes, also we are aware
+        #of the many iterables that can be contained in a json object so we would take note of them
+
         return self.switch()
     
     def switch(self):
