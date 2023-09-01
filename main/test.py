@@ -87,6 +87,13 @@ class Modify:
         else:
             print('Please load JSON data first.')
 
+    def modal_2(self):
+        if self.json_data:
+            sorted_json = json.dumps(self.json_data, indent=4, sort_keys=True, separators=(',',':'))
+            return sorted_json
+        else:
+            print('Please load JSON data first')
+    
     def modal_3(self):
         if self.json_data:
             sorted_json = json.dumps(self.json_data, indent=4, sort_keys=True, separators=(',', ':'))
