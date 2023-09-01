@@ -1,7 +1,16 @@
 {
-    "lorem":"inpsum",
+    "porem":"ipsum",
+    "zerson2":[{
+        "mensa":"otabil"
+    },
+    {
+        "chris":"oyakil"
+    }],
     "lorem1":[
-        "demo", "json", "data","restructurer"
-    ]
+        "demo", "json", "data"
+    ],
+    
+    "lorem":"testing"
+    
     
 }
