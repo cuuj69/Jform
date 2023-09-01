@@ -10,14 +10,21 @@ class Serialize:
     def serialize_keys(self, keys_to_serialize):
         def serialize_key(obj, keys):
             if isinstance(obj, dict):
+                keys_to_add = []
                 for key, val in obj.items():
                     if key in keys:
-                        obj[key] = f'"{val}"'  # Keep the double quotes
-                    elif isinstance(val, (dict, list)):
+                        keys_to_add.append(key)
+                for key in keys_to_add:
+                    val = obj[key]
+                    obj[f'"{key}"'] = f'"{val}"'  # Wrap both key and value in double quotes
+                    obj.pop(key)
+                    keys.remove(key)  # Remove the key from the list
+                    if isinstance(val, (dict, list)):
                         serialize_key(val, keys)
             elif isinstance(obj, list):
                 for item in obj:
-                    serialize_key(item, keys)
+                    if isinstance(item, (dict, list)):
+                        serialize_key(item, keys)
 
         data_copy = self.json_data.copy()
         serialize_key(data_copy, keys_to_serialize)
