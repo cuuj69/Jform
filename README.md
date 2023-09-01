@@ -72,7 +72,7 @@ For example, to move "address" before "name" and then flatten "address":
 
     ```bash
     move address before name; flatten address
-    ```
+    
 
 ### License
 
