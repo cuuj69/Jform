@@ -1,36 +1,43 @@
 import json
+from serialize import Serialize
+from custom import Modal5
 
 class Modify:
     intro = "Welcome to jform v1"
-    #info
 
     def __init__(self):
-        #options
         self.__modals = {
-            '1': 'stringified',
+            '1': 'serialize',
             '2': 'sorted',
             '3': 'reverse sorted',
             '4': 'view structure',
             '5': 'custom restructuring'
         }
-        self.json_data = None  # Initialize JSON data here
+        self.json_data = None
+        self.serializer = None
 
     def main(self):
         print(self.intro)
         print('Available modals:')
         for key, value in self.__modals.items():
-            print(f'{key}: {value}')#display the available modals
+            print(f'{key}: {value}')
 
         user_choice = input('Enter your choice (1/2/3/4/5): ')
         if user_choice in self.__modals:
-            modal_function = getattr(self, f'modal_{user_choice}')
-            if user_choice in ['4', '5']:
+            if user_choice == '1':
+                self.load_json()
+                self.serializer = Serialize(self.json_data)
+                self.display_json_data()
+                keys_to_serialize = self.get_keys_to_serialize()
+                self.perform_serialization(keys_to_serialize)
+            elif user_choice in ['4', '5']:
+                modal_function = getattr(self, f'modal_{user_choice}')
                 modal_function()
             else:
                 if self.json_data:
                     result = modal_function()
-                    print(f'Result of {self.__modals[user_choice]} operation:')
-                    print(result)
+                    if result is not None:
+                        self.write_json_to_file(result)
                 else:
                     print('Please load JSON data first.')
         else:
@@ -45,28 +52,55 @@ class Modify:
         except Exception as e:
             print(f'Error loading JSON data: {e}')
 
-    def modal_1(self):
+    def display_json_data(self):
         if self.json_data:
-            return json.dumps(self.json_data, indent=4)  # Perform stringification
+            print('JSON Data:')
+            print(self.serializer.get_json_data_as_string())
+        else:
+            print('Please load JSON data first.')
+
+    def get_keys_to_serialize(self):
+        keys_input = input('Enter keys to serialize (e.g., key1 key2 key3): ')
+        keys_to_serialize = keys_input.split()
+        return keys_to_serialize
+
+    def perform_serialization(self, keys_to_serialize):
+        if self.json_data:
+            print('Choose serialization type:')
+            print('1: Full Serialize (Key and Values)')
+            print('2: Value Serialize (Values Only)')
+            serialization_type = input('Enter your choice (1/2): ')
+            if serialization_type == '1':
+                result = self.serializer.serialize_keys(keys_to_serialize)
+            elif serialization_type == '2':
+                result = self.serializer.serialize_values(keys_to_serialize)
+            else:
+                print('Invalid serialization type.')
+                return
+
+            print('Serialized JSON:')
+            print(result)
+
+            #save the update json to a file
+            self.write_json_to_file(result)
         else:
             print('Please load JSON data first.')
 
     def modal_2(self):
         if self.json_data:
-            return json.dumps(self.json_data, indent=4, sort_keys=True)  # Perform sorting
+            return json.dumps(self.json_data, indent=4, sort_keys=True)
         else:
             print('Please load JSON data first.')
 
     def modal_3(self):
         if self.json_data:
-            return json.dumps(self.json_data, indent=4, sort_keys=True, reverse=True)  # Perform reverse sorting
+            return json.dumps(self.json_data, indent=4, sort_keys=True, reverse=True)
         else:
             print('Please load JSON data first.')
 
     def modal_4(self):
         if self.json_data:
-            print('JSON structure:')
-            self.view_json_structure(self.json_data)
+            self.display_json_data()
         else:
             print('Please load JSON data first.')
 
@@ -74,22 +108,21 @@ class Modify:
         if self.json_data:
             print('Custom restructuring: (e.g., key1 before key2)')
             restructuring_rule = input('Enter restructuring rule: ')
-            # Parse and apply the restructuring rule to the JSON data
-            # Implement this part based on your specific requirements
+            modal5 = Modal5(self.json_data)
+            modal5.apply_custom_restructuring(restructuring_rule)
             print('Custom restructuring applied successfully.')
         else:
             print('Please load JSON data first.')
-
-    def view_json_structure(self, json_obj, level=0):
-        if isinstance(json_obj, dict):
-            for key, value in json_obj.items():
-                print('  ' * level + str(key))
-                self.view_json_structure(value, level + 1)
-        elif isinstance(json_obj, list):
-            for item in json_obj:
-                self.view_json_structure(item, level + 1)
+        
+    def write_json_to_file(self, json_str):
+        output_file = input('Enter the path to save the updated JSON file: ')
+        try:
+            with open(output_file, 'w') as file:
+                file.write(json_str)
+            print(f'Updated JSON data saved to {output_file} successfully.')
+        except Exception as e:
+            print(f'Error saving JSON data: {e}')
 
 if __name__ == '__main__':
     modifier = Modify()
-    modifier.load_json()  # Load JSON data before applying operations
     modifier.main()
