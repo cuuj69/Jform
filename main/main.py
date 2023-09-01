@@ -1,7 +1,10 @@
 """Entry for json files to be restructured
 """
 
-from script import Modify
+from test import Modify
 
-new = Modify()
-new.main()
+
+if __name__ == '__main__':
+    modifier = Modify()
+    modifier.load_json()  # Load JSON data before applying operations
+    modifier.main()
