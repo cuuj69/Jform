@@ -15,6 +15,7 @@ class Modify:
         }
         self.json_data = None
         self.serializer = None
+        self.modal_function = None # modal_function defined
 
     def main(self):
         print(self.intro)
@@ -30,10 +31,9 @@ class Modify:
                 self.display_json_data()
                 keys_to_serialize = self.get_keys_to_serialize()
                 self.perform_serialization(keys_to_serialize)
-            elif user_choice in ['4', '5']:
-                modal_function = getattr(self, f'modal_{user_choice}')
-                modal_function()
             else:
+                modal_function = getattr(self, f'modal_{user_choice}')
+            
                 if self.json_data:
                     result = modal_function()
                     if result is not None:
@@ -48,10 +48,10 @@ class Modify:
             json_file = input('Enter the path to your JSON file: ')
             with open(json_file, 'r') as file:
                 self.json_data = json.load(file)
-                print('JSON data loaded successfully.')
+                self.serializer = Serialize(self.json_data)
+                print('JSON data loaded successfully')
         except Exception as e:
             print(f'Error loading JSON data: {e}')
-
     def display_json_data(self):
         if self.json_data:
             print('JSON Data:')
@@ -81,23 +81,20 @@ class Modify:
             print('Serialized JSON:')
             print(result)
 
-            #save the update json to a file
+            # Save the updated JSON to a file
             self.write_json_to_file(result)
-        else:
-            print('Please load JSON data first.')
-
-    def modal_2(self):
-        if self.json_data:
-            return json.dumps(self.json_data, indent=4, sort_keys=True)
         else:
             print('Please load JSON data first.')
 
     def modal_3(self):
         if self.json_data:
-            return json.dumps(self.json_data, indent=4, sort_keys=True, reverse=True)
+            sorted_json = json.dumps(self.json_data, indent=4, sort_keys=True, separators=(',', ':'))
+            reversed_json = json.loads(sorted_json)
+            reversed_json = {k: reversed_json[k] for k in reversed(reversed_json)}
+            return json.dumps(reversed_json, indent=4, separators=(',', ':'))
         else:
-            print('Please load JSON data first.')
-
+            print('Please load JSON data first')
+            
     def modal_4(self):
         if self.json_data:
             self.display_json_data()
@@ -125,4 +122,5 @@ class Modify:
 
 if __name__ == '__main__':
     modifier = Modify()
+    modifier.load_json()
     modifier.main()
