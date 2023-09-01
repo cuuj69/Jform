@@ -70,6 +70,7 @@ The custom restructuring modal allows you to apply custom restructuring rules to
 
 For example, to move "address" before "name" and then flatten "address":
 
+- For example, to move "address" before "name" and then flatten "address":
     ```bash
     move address before name; flatten address
     
