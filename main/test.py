@@ -52,6 +52,7 @@ class Modify:
                 print('JSON data loaded successfully')
         except Exception as e:
             print(f'Error loading JSON data: {e}')
+            
     def display_json_data(self):
         if self.json_data:
             print('JSON Data:')
