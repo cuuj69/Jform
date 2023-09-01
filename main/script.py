@@ -41,13 +41,13 @@ class Modify:
         return self.__modals.get("modal_1")
 
     def modal_2(self):
-        return self.__modals.get("modal_1")
+        return self.__modals.get("modal_2")
     
     def modal_3(self):
-        return self.__modals.get("modal_1")
+        return self.__modals.get("modal_3")
     
 
-if __name__ == '__name__':
+if __name__ == '__main__':
     Modify()
     
 
