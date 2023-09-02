@@ -32,7 +32,6 @@
    ```bash
    pip install -requirements.txt
 
-
 ### Usage
 
 1. Run the `main.py` script to start JForm:
@@ -42,7 +41,6 @@
 2. Follow the on-screen instructions to load your JSON data and select from available modals.
   
 3. Use the provided options to perform JSON operations.
-
 
 ### Modals
 
@@ -57,7 +55,6 @@ JForm provides the following modals:
 * View Structure: View the current structure of JSON data.
 
 * Custom Restructuring: Apply custom restructuring rules to JSON data.
-
 
 ### Custom Restructuring Commands
 
@@ -74,7 +71,6 @@ For example, to move "address" before "name" and then flatten "address":
     ```bash
     move address before name; flatten address
     
-
 ### License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details.
