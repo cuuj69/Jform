@@ -1,5 +1,6 @@
 """Entry for json files to be restructured
 """
+#!/usr/bin/python3
 
 from test import Modify
 

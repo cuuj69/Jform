@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import json
 from serialize import Serialize
 from custom import Modal5
